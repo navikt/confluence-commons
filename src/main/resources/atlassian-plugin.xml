@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="confluence-commons"/>
+
+    <!-- add our web resources -->
+    <web-resource key="confluence-commons-resources" name="confluence-commons Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="confluence-commons.css" location="/css/confluence-commons.css"/>
+        <resource type="download" name="confluence-commons.js" location="/js/confluence-commons.js"/>
+        <resource type="download" name="images/" location="/images"/>
+        <context>confluence-commons</context>
+    </web-resource>
+
+    <web-resource key="sugarjs" name="SugarJS Web Resource">
+        <resource type="download" name="sugar-1.3.9.min.js" location="/js/sugar-1.3.9.min.js"/>
+    </web-resource>
+
+    <web-resource key="morrisjs" name="MorrisJS Web Resource">
+        <dependency>${project.groupId}.${project.artifactId}:raphaeljs</dependency>
+        <resource type="download" name="morris.min.js" location="/js/morris.min.js"/>
+    </web-resource>
+
+    <web-resource key="raphaeljs" name="RaphaelJS Web Resource">
+        <resource type="download" name="raphael.min.js" location="/js/raphael-min.js"/>
+    </web-resource>
+
+    <rest i18n-name-key="jira-search.name" key="jira-search" path="/jirasearch" version="1.0">
+        <description key="jira-search.description">The Jira Search REST Endpoint</description>
+        <package>no.nav.kiv.confluence.labs.rest</package>
+    </rest>
+
+    <component-import key="salRequestFactory" interface="com.atlassian.sal.api.net.RequestFactory" />
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+
+    <!-- our custom components -->
+    <component key="rest-client" class="no.nav.kiv.confluence.labs.impl.RestCallClientImpl" public="true" >
+        <interface>no.nav.kiv.confluence.labs.api.RestCallClient</interface>
+    </component>
+
+</atlassian-plugin>
