@@ -12,6 +12,7 @@
     <name>NAV IKT :: Confluence Commons</name>
     <description>Contains som common components used in Confluence f.eks: communication to external systems like JIRA.</description>
     <packaging>atlassian-plugin</packaging>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
