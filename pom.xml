@@ -8,7 +8,7 @@
         <version>1.2-SNAPSHOT</version>
     </parent>
     <artifactId>confluence-commons</artifactId>
-    <version>1.1.0</version>
+    <version>1.2-SNAPSHOT</version>
     <name>NAV IKT :: Confluence Commons</name>
     <description>Contains som common components used in Confluence f.eks: communication to external systems like JIRA.</description>
     <packaging>atlassian-plugin</packaging>
