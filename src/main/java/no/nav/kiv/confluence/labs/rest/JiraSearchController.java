@@ -23,6 +23,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A resource creating search queries to JIRA.
@@ -49,27 +50,31 @@ public class JiraSearchController {
         String requestPath = "/rest/api/latest/search?jql=";
         try {
 
-            if (null != searchModel.getIssueKeys()) {
-                partQueries.add(HtmlUtil.urlEncode("key in (" + searchModel.getIssueKeys() + ")"));
+            final List<String> issueKeys = searchModel.getIssueKeys();
+            if (null != issueKeys && !issueKeys.isEmpty()) {
+                partQueries.add(HtmlUtil.urlEncode("key in (" + issueKeys.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
-            if (null != searchModel.getProjectKeys()) {
-                partQueries.add(HtmlUtil.urlEncode("project in (" + searchModel.getProjectKeys() + ")"));
+            final List<String> projectKeys = searchModel.getProjectKeys();
+            if (null != projectKeys && !projectKeys.isEmpty()) {
+                partQueries.add(HtmlUtil.urlEncode("project in (" + projectKeys.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
-            if (null != searchModel.getFixVersions()) {
-                partQueries.add(HtmlUtil.urlEncode("fixVersion in (" + searchModel.getFixVersions() + ")"));
+            final List<String> fixVersions = searchModel.getFixVersions();
+            if (null != fixVersions && ! fixVersions.isEmpty()) {
+                partQueries.add(HtmlUtil.urlEncode("fixVersion in (" + fixVersions.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
-            if (null != searchModel.getIssueTypes()) {
-                partQueries.add(HtmlUtil.urlEncode("type in (" + searchModel.getIssueTypes() + ")"));
+            final List<String> issueTypes = searchModel.getIssueTypes();
+            if (null != issueTypes && !issueTypes.isEmpty()) {
+                partQueries.add(HtmlUtil.urlEncode("type in (" + issueTypes.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
             requestPath = requestPath.concat(Joiner.on(HtmlUtil.urlEncode(" and ")).join(partQueries));
-            requestPath = requestPath.concat("&maxResults=1000");
+            requestPath = requestPath.concat("&maxResults=" + (searchModel.getMaxResults() != null ? searchModel.getMaxResults() : "1000"));
 
             if (null != searchModel.getFields()) {
-                requestPath = requestPath.concat("&fields=" + HtmlUtil.urlEncode(searchModel.getFields()));
+                requestPath = requestPath.concat("&fields=" + HtmlUtil.urlEncode(Joiner.on(",").join(searchModel.getFields())));
             }
 
             ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
