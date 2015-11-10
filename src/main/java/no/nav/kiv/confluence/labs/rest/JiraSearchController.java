@@ -52,7 +52,12 @@ public class JiraSearchController {
 
             final List<String> issueKeys = searchModel.getIssueKeys();
             if (null != issueKeys && !issueKeys.isEmpty()) {
-                partQueries.add(HtmlUtil.urlEncode("key in (" + issueKeys.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
+
+            }
+
+            final List<String> statuses = searchModel.getStatus();
+            if (null != statuses && !statuses.isEmpty()) {
+                partQueries.add(HtmlUtil.urlEncode("status in (" + statuses.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
             final List<String> projectKeys = searchModel.getProjectKeys();
@@ -116,15 +121,4 @@ public class JiraSearchController {
     JiraSearchResponse createJSONResponse(String response) {
         return new JiraSearchResponse(response);
     }
-
-    /**
-     * Return the JSON object.
-     *
-     * @param response A JSON response from the REST endpoint
-     * @return an object that can be serialized as JSON
-     */
-    JiraSearchResponse createErrorJSONResponse(String response) {
-        return new JiraSearchResponse(response);
-    }
-
 }
