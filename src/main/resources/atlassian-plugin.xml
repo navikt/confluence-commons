@@ -33,6 +33,13 @@
         <resource type="download" name="sugar-1.3.9.min.js" location="/js/sugar-1.3.9.min.js"/>
     </web-resource>
 
+    <web-resource key="chosenjs" name="ChosenJS Web Resource">
+        <resource type="download" name="chosen.jquery.min.css" location="/css/chosen.css"/>
+        <resource type="download" name="chosen.jquery.min.js" location="/js/chosen.jquery.min.js"/>
+        <resource type="download" name="chosen-sprite.png" location="/images/chosen/chosen-sprite.png"/>
+        <resource type="download" name="chosen-sprite@2x.png" location="/images/chosen/chosen-sprite@2x.png"/>
+    </web-resource>
+
     <web-resource key="morrisjs" name="MorrisJS Web Resource">
         <dependency>${project.groupId}.${project.artifactId}:raphaeljs</dependency>
         <resource type="download" name="morris.min.js" location="/js/morris.min.js"/>

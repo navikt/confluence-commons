@@ -52,7 +52,7 @@ public class JiraSearchController {
 
             final List<String> issueKeys = searchModel.getIssueKeys();
             if (null != issueKeys && !issueKeys.isEmpty()) {
-
+                partQueries.add(HtmlUtil.urlEncode("key in (" + issueKeys.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
             final List<String> statuses = searchModel.getStatus();
@@ -107,7 +107,6 @@ public class JiraSearchController {
                 log.error(message, e);
             }
         }
-
         // Common return point for all caught exceptions, success is returned inside the try
         return Response.serverError().entity(createJSONResponse(message)).build();
     }
