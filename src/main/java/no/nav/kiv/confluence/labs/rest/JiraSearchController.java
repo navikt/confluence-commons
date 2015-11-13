@@ -10,14 +10,12 @@ import com.google.common.collect.Lists;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchRequest;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
 import no.nav.kiv.confluence.labs.utils.RequestBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -47,7 +45,7 @@ public class JiraSearchController {
         String message;
 
         List<String> partQueries = Lists.newArrayList();
-        String requestPath = "/rest/api/latest/search?jql=";
+        String requestPath = "/rest/api/2/search?jql=";
         try {
 
             final List<String> issueKeys = searchModel.getIssueKeys();
@@ -58,6 +56,11 @@ public class JiraSearchController {
             final List<String> statuses = searchModel.getStatus();
             if (null != statuses && !statuses.isEmpty()) {
                 partQueries.add(HtmlUtil.urlEncode("status in (" + statuses.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
+            }
+
+            final List<String> components = searchModel.getComponents();
+            if (null != components && !components.isEmpty()) {
+                partQueries.add(HtmlUtil.urlEncode("component in (" + components.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
             final List<String> projectKeys = searchModel.getProjectKeys();
@@ -75,11 +78,38 @@ public class JiraSearchController {
                 partQueries.add(HtmlUtil.urlEncode("type in (" + issueTypes.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
+            final String searchKeyword = searchModel.getSearchKeyword();
+            if (!StringUtils.isBlank(searchKeyword)) {
+                String textSearch;
+                final List<String> searchInFields = searchModel.getSearchInFields();
+                if (null != searchInFields && !searchInFields.isEmpty()) {
+                    List<String> partTestSearchTerms = Lists.newArrayList();
+
+                    partTestSearchTerms.addAll(searchInFields.stream().map(field -> HtmlUtil.urlEncode("'" + field + "' ~ '") + searchKeyword + HtmlUtil.urlEncode("'")).collect(Collectors.toList()));
+
+                    textSearch = Joiner.on(HtmlUtil.urlEncode(" or ")).join(partTestSearchTerms);
+                    textSearch = HtmlUtil.urlEncode("(").concat(textSearch).concat(HtmlUtil.urlEncode(")"));
+
+                } else {
+                    textSearch = (HtmlUtil.urlEncode("'summary' ~ '") + searchKeyword + HtmlUtil.urlEncode("'"));
+                }
+
+                if (!StringUtils.isBlank(textSearch)) {
+                    partQueries.add(textSearch);
+                }
+            }
+
             requestPath = requestPath.concat(Joiner.on(HtmlUtil.urlEncode(" and ")).join(partQueries));
             requestPath = requestPath.concat("&maxResults=" + (searchModel.getMaxResults() != null ? searchModel.getMaxResults() : "1000"));
 
-            if (null != searchModel.getFields()) {
-                requestPath = requestPath.concat("&fields=" + HtmlUtil.urlEncode(Joiner.on(",").join(searchModel.getFields())));
+            final List<String> fields = searchModel.getFields();
+            if (null != fields && !fields.isEmpty()) {
+                requestPath = requestPath.concat("&fields=" + HtmlUtil.urlEncode(Joiner.on(",").join(fields)));
+            }
+
+            final List<String> expand = searchModel.getExpand();
+            if (null != expand && !expand.isEmpty()) {
+                requestPath = requestPath.concat("&expand=" + HtmlUtil.urlEncode(Joiner.on(",").join(expand)));
             }
 
             ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
@@ -103,6 +133,43 @@ public class JiraSearchController {
 
         } catch (Exception e) {
             message = "Failed to find issues, caught " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+        }
+        // Common return point for all caught exceptions, success is returned inside the try
+        return Response.serverError().entity(createJSONResponse(message)).build();
+    }
+
+    @GET
+    @Path("metadata")
+    public Response getMatadata(@QueryParam("projectKey") String projectKey, @QueryParam("issuetypeName") String issuetypeName) {
+        String message;
+        String requestPath = "/rest/api/2/issue/createmeta?projectKeys=" +
+                projectKey + "&issuetypeName=" +
+                issuetypeName +"&expand=projects.issuetypes.fields";
+        try {
+            ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
+            String response = request.execute();
+
+            return Response.ok(createJSONResponse(response)).build();
+
+        } catch (CredentialsRequiredException e) {
+            message = "[CREx] Failed to find metadata with the request to " + requestPath + " got " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new JiraSearchResponse(e.getMessage())).build();
+
+        } catch (ResponseException e) {
+            message = "[REx] Failed to find metadata with the request to " + requestPath + " got " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message);
+            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(new JiraSearchResponse(e.getMessage())).build();
+
+        } catch (Exception e) {
+            message = "Failed to find metadata, caught " + e.getClass().getName() + " with message: " + e.getMessage();
             if (log.isErrorEnabled()) {
                 log.error(message, e);
             }

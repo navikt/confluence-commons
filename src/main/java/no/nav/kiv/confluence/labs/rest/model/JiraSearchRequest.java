@@ -17,19 +17,29 @@ public class JiraSearchRequest {
     List<String> projectKeys;
     List<String> issueTypes;
     List<String> status;
+    List<String> components;
     List<String> fields;
+    List<String> expand;
+    List<String> searchInFields;
     String maxResults;
+    String searchKeyword;
+
 
     public JiraSearchRequest() {
     }
 
-    public JiraSearchRequest(List<String> issueKeys, List<String> fixVersions, List<String> projectKeys, List<String> issueTypes, List<String> status, List<String> fields) {
+    public JiraSearchRequest(List<String> issueKeys, List<String> fixVersions, List<String> projectKeys, List<String> issueTypes, List<String> status, List<String> components, List<String> fields, List<String> expand, List<String> searchInFields, String maxResults, String searchKeyword) {
         this.issueKeys = issueKeys;
         this.fixVersions = fixVersions;
         this.projectKeys = projectKeys;
         this.issueTypes = issueTypes;
         this.status = status;
+        this.components = components;
         this.fields = fields;
+        this.expand = expand;
+        this.searchInFields = searchInFields;
+        this.maxResults = maxResults;
+        this.searchKeyword = searchKeyword;
     }
 
     public List<String> getIssueKeys() {
@@ -86,5 +96,37 @@ public class JiraSearchRequest {
 
     public void setMaxResults(String maxResults) {
         this.maxResults = maxResults;
+    }
+
+    public List<String> getComponents() {
+        return components;
+    }
+
+    public void setComponents(List<String> components) {
+        this.components = components;
+    }
+
+    public String getSearchKeyword() {
+        return searchKeyword;
+    }
+
+    public void setSearchKeyword(String searchKeyword) {
+        this.searchKeyword = searchKeyword;
+    }
+
+    public List<String> getSearchInFields() {
+        return searchInFields;
+    }
+
+    public void setSearchInFields(List<String> searchInFields) {
+        this.searchInFields = searchInFields;
+    }
+
+    public List<String> getExpand() {
+        return expand;
+    }
+
+    public void setExpand(List<String> expand) {
+        this.expand = expand;
     }
 }
