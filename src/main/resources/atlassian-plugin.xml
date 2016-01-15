@@ -21,7 +21,7 @@
     <resource type="i18n" name="i18n" location="confluence-commons"/>
 
     <!-- add our web resources -->
-    <web-resource key="confluence-commons-resources" name="confluence-commons Web Resources">
+    <web-resource key="confluence-commons-js" name="confluence-commons Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <resource type="download" name="confluence-commons.css" location="/css/confluence-commons.css"/>
         <resource type="download" name="confluence-commons.js" location="/js/confluence-commons.js"/>

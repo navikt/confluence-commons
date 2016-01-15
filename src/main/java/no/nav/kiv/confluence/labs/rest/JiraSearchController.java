@@ -146,8 +146,8 @@ public class JiraSearchController {
     public Response getMatadata(@QueryParam("projectKey") String projectKey, @QueryParam("issuetypeName") String issuetypeName) {
         String message;
         String requestPath = "/rest/api/2/issue/createmeta?projectKeys=" +
-                projectKey + "&issuetypeName=" +
-                issuetypeName +"&expand=projects.issuetypes.fields";
+                projectKey + "&issuetypeNames=" +
+                issuetypeName + "&expand=projects.issuetypes.fields";
         try {
             ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
             String response = request.execute();
