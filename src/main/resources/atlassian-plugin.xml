@@ -49,11 +49,19 @@
         <resource type="download" name="raphael.min.js" location="/js/raphael-min.js"/>
     </web-resource>
 
+    <web-resource key="acejs" name="AceJS Web Resource">
+        <resource type="download" name="ace.js" location="/js/ace.js"/>
+        <resource type="download" name="ace-mode-handlebars.js" location="/js/ace-mode-handlebars.js"/>
+        <resource type="download" name="ace-theme-eclipse.js" location="/js/ace-theme-eclipse.js"/>
+    </web-resource>
+
+    <web-resource key="handlebarsjs" name="HandlebarsJS Web Resource">
+        <resource type="download" name="handlebars.js" location="/js/handlebars-v4.0.5.js"/>
+    </web-resource>
+
     <rest i18n-name-key="jira-search.name" key="jira-search" path="/jirasearch" version="1.0">
         <description key="jira-search.description">The Jira Search REST Endpoint</description>
         <package>no.nav.kiv.confluence.labs.rest</package>
     </rest>
-
-
 
 </atlassian-plugin>
