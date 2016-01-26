@@ -45,8 +45,17 @@
         <resource type="download" name="morris.min.js" location="/js/morris.min.js"/>
     </web-resource>
 
+    <web-resource key="momentjs" name="MomentJS Web Resource">
+        <dependency>${project.groupId}.${project.artifactId}:momentjs</dependency>
+        <resource type="download" name="moment.js" location="/js/moment.js"/>
+    </web-resource>
+
     <web-resource key="raphaeljs" name="RaphaelJS Web Resource">
         <resource type="download" name="raphael.min.js" location="/js/raphael-min.js"/>
+    </web-resource>
+
+    <web-resource key="sortablejs" name="SortableJS Web Resource">
+        <resource type="download" name="sortable.min.js" location="/js/sortable.min.js"/>
     </web-resource>
 
     <web-resource key="acejs" name="AceJS Web Resource">

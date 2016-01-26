@@ -78,6 +78,17 @@ public class JiraSearchController {
                 partQueries.add(HtmlUtil.urlEncode("type in (" + issueTypes.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
+            final List<List<String>> filterInFields = searchModel.getFilterFields();
+            if (null != filterInFields && !filterInFields.isEmpty()) {
+                for (List<String> filterField : filterInFields) {
+                    String fieldName = filterField.get(0).split("::")[0];
+                    if ("components".equals(fieldName)) {
+                        fieldName = "component";
+                    }
+                    partQueries.add(HtmlUtil.urlEncode(fieldName + " in (" + filterField.stream().map((s) -> "'" + s.split("::")[1] + "'").collect(Collectors.joining(", ")) + ")"));
+                }
+            }
+
             final String searchKeyword = searchModel.getSearchKeyword();
             if (!StringUtils.isBlank(searchKeyword)) {
                 final String searchKey = HtmlUtil.urlDecode(searchKeyword);
@@ -161,6 +172,43 @@ public class JiraSearchController {
         String requestPath = "/rest/api/2/issue/createmeta?projectKeys=" +
                 projectKey + "&issuetypeNames=" +
                 issuetypeName + "&expand=projects.issuetypes.fields";
+        try {
+            ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
+            String response = request.execute();
+
+            return Response.ok(createJSONResponse(response)).build();
+
+        } catch (CredentialsRequiredException e) {
+            message = "[CREx] Failed to find metadata with the request to " + requestPath + " got " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new JiraSearchResponse(e.getMessage())).build();
+
+        } catch (ResponseException e) {
+            message = "[REx] Failed to find metadata with the request to " + requestPath + " got " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message);
+            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(new JiraSearchResponse(e.getMessage())).build();
+
+        } catch (Exception e) {
+            message = "Failed to find metadata, caught " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+        }
+        // Common return point for all caught exceptions, success is returned inside the try
+        return Response.serverError().entity(createJSONResponse(message)).build();
+    }
+
+    @GET
+    @Path("metadata/statuses")
+    public Response getStatuser(@QueryParam("projectKey") String projectKey) {
+        String message;
+
+        String requestPath = "/rest/api/2/project/" + projectKey + "/statuses";
+
         try {
             ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
             String response = request.execute();

@@ -22,6 +22,7 @@ public class JiraSearchRequest {
     List<String> expand;
     List<String> searchInFields;
     List<String> searchInFieldsNames;
+    List<List<String>> filterFields;
     String maxResults;
     String searchKeyword;
 
@@ -29,7 +30,7 @@ public class JiraSearchRequest {
     public JiraSearchRequest() {
     }
 
-    public JiraSearchRequest(List<String> issueKeys, List<String> fixVersions, List<String> projectKeys, List<String> issueTypes, List<String> status, List<String> components, List<String> fields, List<String> expand, List<String> searchInFields, String maxResults, String searchKeyword, List<String> searchInFieldsNames) {
+    public JiraSearchRequest(List<String> issueKeys, List<String> fixVersions, List<String> projectKeys, List<String> issueTypes, List<String> status, List<String> components, List<String> fields, List<String> expand, List<String> searchInFields, String maxResults, String searchKeyword, List<String> searchInFieldsNames, List<List<String>> filterFields) {
         this.issueKeys = issueKeys;
         this.fixVersions = fixVersions;
         this.projectKeys = projectKeys;
@@ -42,6 +43,7 @@ public class JiraSearchRequest {
         this.maxResults = maxResults;
         this.searchKeyword = searchKeyword;
         this.searchInFieldsNames = searchInFieldsNames;
+        this.filterFields = filterFields;
     }
 
     public List<String> getIssueKeys() {
@@ -138,5 +140,13 @@ public class JiraSearchRequest {
 
     public void setSearchInFieldsNames(List<String> searchInFieldsNames) {
         this.searchInFieldsNames = searchInFieldsNames;
+    }
+
+    public List<List<String>> getFilterFields() {
+        return filterFields;
+    }
+
+    public void setFilterFields(List<List<String>> filterFields) {
+        this.filterFields = filterFields;
     }
 }
