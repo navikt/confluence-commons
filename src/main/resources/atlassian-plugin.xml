@@ -58,6 +58,10 @@
         <resource type="download" name="sortable.min.js" location="/js/sortable.min.js"/>
     </web-resource>
 
+    <web-resource key="d3js" name="D3JS Web Resource">
+        <resource type="download" name="d3.min.js" location="/js/d3.min.js"/>
+    </web-resource>
+
     <web-resource key="acejs" name="AceJS Web Resource">
         <resource type="download" name="ace.js" location="/js/ace.js"/>
         <resource type="download" name="ace-mode-handlebars.js" location="/js/ace-mode-handlebars.js"/>
