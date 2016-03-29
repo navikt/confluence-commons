@@ -103,7 +103,7 @@ public class JiraSearchController {
                         final String searchKeyRep = searchKey.replaceAll("\\*", ".*").replaceAll("\\?", ".?");
                         partTestSearchTerms.addAll(searchInFieldsNames.stream().map(field -> HtmlUtil.urlEncode("issueFunction in issueFieldMatch(\"project in (") + projectKeys.stream().map((s) -> HtmlUtil.urlEncode("'") + HtmlUtil.urlEncode(s) + HtmlUtil.urlEncode("'")).collect(Collectors.joining(HtmlUtil.urlEncode(", "))) + HtmlUtil.urlEncode(")\", \"" + field + "\", \"(?i)") + HtmlUtil.urlEncode(searchKeyRep) + HtmlUtil.urlEncode("\")")).collect(Collectors.toList()));
                     } else {
-                        partTestSearchTerms.addAll(searchInFields.stream().map(field -> HtmlUtil.urlEncode("'" + field + "' ~ '") + searchKey + HtmlUtil.urlEncode("'")).collect(Collectors.toList()));
+                        partTestSearchTerms.addAll(searchInFields.stream().map(field -> HtmlUtil.urlEncode("'" + field + "' ~ '") + HtmlUtil.urlEncode(searchKey) + HtmlUtil.urlEncode("'")).collect(Collectors.toList()));
                     }
 
                     textSearch = Joiner.on(HtmlUtil.urlEncode(" or ")).join(partTestSearchTerms);
@@ -114,7 +114,7 @@ public class JiraSearchController {
                         final String searchKeyRep = searchKey.replaceAll("\\*", ".*").replaceAll("\\?", ".?");
                         textSearch = HtmlUtil.urlEncode("issueFunction in issueFieldMatch(\"project in (") + projectKeys.stream().map((s) -> HtmlUtil.urlEncode("'") + s + HtmlUtil.urlEncode("'")).collect(Collectors.joining(HtmlUtil.urlEncode(", "))) + HtmlUtil.urlEncode(")\", \"summary\", \"(?i)") + HtmlUtil.urlEncode(searchKeyRep) + HtmlUtil.urlEncode("\")");
                     } else {
-                        textSearch = (HtmlUtil.urlEncode("'summary' ~ '") + searchKey + HtmlUtil.urlEncode("'"));
+                        textSearch = (HtmlUtil.urlEncode("'summary' ~ '") + HtmlUtil.urlEncode(searchKey) + HtmlUtil.urlEncode("'"));
                     }
                 }
 
