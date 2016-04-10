@@ -78,6 +78,8 @@ public class JiraSearchController {
                 partQueries.add(HtmlUtil.urlEncode("type in (" + issueTypes.stream().map((s) -> "'" + s + "'").collect(Collectors.joining(", ")) + ")"));
             }
 
+            List<String> filterIssueFunction = Lists.newArrayList();
+
             final List<List<String>> filterInFields = searchModel.getFilterFields();
             if (null != filterInFields && !filterInFields.isEmpty()) {
                 for (List<String> filterField : filterInFields) {
@@ -85,7 +87,9 @@ public class JiraSearchController {
                     if ("components".equals(fieldName)) {
                         fieldName = "component";
                     }
-                    partQueries.add(HtmlUtil.urlEncode(fieldName + " in (" + filterField.stream().map((s) -> "'" + s.split("::")[1] + "'").collect(Collectors.joining(", ")) + ")"));
+                    final String filter = HtmlUtil.urlEncode(fieldName + " in (" + filterField.stream().map((s) -> "'" + s.split("::")[1] + "'").collect(Collectors.joining(", ")) + ")");
+                    partQueries.add(filter);
+                    filterIssueFunction.add(filter);
                 }
             }
 
@@ -96,12 +100,20 @@ public class JiraSearchController {
                 String textSearch;
                 final List<String> searchInFields = searchModel.getSearchInFields();
                 final List<String> searchInFieldsNames = searchModel.getSearchInFieldsNames();
+
+                final String additionalFilter;
+                if (!filterIssueFunction.isEmpty()) {
+                    additionalFilter = HtmlUtil.urlEncode(" AND ") + Joiner.on(HtmlUtil.urlEncode(" AND ")).join(filterIssueFunction);
+                } else {
+                    additionalFilter = "";
+                }
+
                 if ((null != searchInFields && !searchInFields.isEmpty()) || (null != searchInFieldsNames && !searchInFieldsNames.isEmpty())) {
                     List<String> partTestSearchTerms = Lists.newArrayList();
 
                     if (searchKey.indexOf("*") == 0 || searchKey.indexOf("?") == 0) {
                         final String searchKeyRep = searchKey.replaceAll("\\*", ".*").replaceAll("\\?", ".?");
-                        partTestSearchTerms.addAll(searchInFieldsNames.stream().map(field -> HtmlUtil.urlEncode("issueFunction in issueFieldMatch(\"project in (") + projectKeys.stream().map((s) -> HtmlUtil.urlEncode("'") + HtmlUtil.urlEncode(s) + HtmlUtil.urlEncode("'")).collect(Collectors.joining(HtmlUtil.urlEncode(", "))) + HtmlUtil.urlEncode(")\", \"" + field + "\", \"(?i)") + HtmlUtil.urlEncode(searchKeyRep) + HtmlUtil.urlEncode("\")")).collect(Collectors.toList()));
+                        partTestSearchTerms.addAll(searchInFieldsNames.stream().map(field -> HtmlUtil.urlEncode("issueFunction in issueFieldMatch(\"project in (") + projectKeys.stream().map((s) -> HtmlUtil.urlEncode("'") + HtmlUtil.urlEncode(s) + HtmlUtil.urlEncode("'")).collect(Collectors.joining(HtmlUtil.urlEncode(", "))) + HtmlUtil.urlEncode(")") + additionalFilter + HtmlUtil.urlEncode("\", \"" + field + "\", \"(?i)") + HtmlUtil.urlEncode(searchKeyRep) + HtmlUtil.urlEncode("\")")).collect(Collectors.toList()));
                     } else {
                         partTestSearchTerms.addAll(searchInFields.stream().map(field -> HtmlUtil.urlEncode("'" + field + "' ~ '") + HtmlUtil.urlEncode(searchKey) + HtmlUtil.urlEncode("'")).collect(Collectors.toList()));
                     }
@@ -112,7 +124,7 @@ public class JiraSearchController {
                 } else {
                     if (searchKey.indexOf("*") == 0 || searchKey.indexOf("?") == 0) {
                         final String searchKeyRep = searchKey.replaceAll("\\*", ".*").replaceAll("\\?", ".?");
-                        textSearch = HtmlUtil.urlEncode("issueFunction in issueFieldMatch(\"project in (") + projectKeys.stream().map((s) -> HtmlUtil.urlEncode("'") + s + HtmlUtil.urlEncode("'")).collect(Collectors.joining(HtmlUtil.urlEncode(", "))) + HtmlUtil.urlEncode(")\", \"summary\", \"(?i)") + HtmlUtil.urlEncode(searchKeyRep) + HtmlUtil.urlEncode("\")");
+                        textSearch = HtmlUtil.urlEncode("issueFunction in issueFieldMatch(\"project in (") + projectKeys.stream().map((s) -> HtmlUtil.urlEncode("'") + s + HtmlUtil.urlEncode("'")).collect(Collectors.joining(HtmlUtil.urlEncode(", "))) + HtmlUtil.urlEncode(")") + additionalFilter + HtmlUtil.urlEncode("\", \"summary\", \"(?i)") + HtmlUtil.urlEncode(searchKeyRep) + HtmlUtil.urlEncode("\")");
                     } else {
                         textSearch = (HtmlUtil.urlEncode("'summary' ~ '") + HtmlUtil.urlEncode(searchKey) + HtmlUtil.urlEncode("'"));
                     }
