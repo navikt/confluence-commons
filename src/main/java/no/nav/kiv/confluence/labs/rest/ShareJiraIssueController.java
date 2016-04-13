@@ -8,11 +8,12 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.common.collect.Lists;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
 import no.nav.kiv.confluence.labs.rest.model.ShareJiraIssueRequest;
-import no.nav.kiv.confluence.labs.utils.RequestBuilder;
+import no.nav.kiv.confluence.labs.utils.DefaultRequestBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,13 +31,14 @@ import java.util.ArrayList;
 @Path("/share")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
+@Named
 public class ShareJiraIssueController {
     private static final Logger log = LoggerFactory.getLogger(ShareJiraIssueController.class);
 
-    private RequestBuilder requestBuilder;
+    private DefaultRequestBuilder requestBuilder;
 
     @Inject
-    public ShareJiraIssueController(RequestBuilder requestBuilder) {
+    public ShareJiraIssueController(DefaultRequestBuilder requestBuilder) {
         this.requestBuilder = requestBuilder;
     }
 

@@ -9,12 +9,13 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchRequest;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
-import no.nav.kiv.confluence.labs.utils.RequestBuilder;
+import no.nav.kiv.confluence.labs.utils.DefaultRequestBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -29,14 +30,15 @@ import java.util.stream.Collectors;
 @Path("/search")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
+@Named
 public class JiraSearchController {
 
     private static final Logger log = LoggerFactory.getLogger(JiraSearchController.class);
 
-    private RequestBuilder requestBuilder;
+    private DefaultRequestBuilder requestBuilder;
 
     @Inject
-    public JiraSearchController(RequestBuilder requestBuilder) {
+    public JiraSearchController(DefaultRequestBuilder requestBuilder) {
         this.requestBuilder = requestBuilder;
     }
 

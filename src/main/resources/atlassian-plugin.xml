@@ -9,14 +9,6 @@
         <param name="plugin-logo">images/pluginLogo.png</param>
     </plugin-info>
 
-    <component-import key="salRequestFactory" interface="com.atlassian.sal.api.net.RequestFactory" />
-    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
-
-    <!-- our custom components -->
-    <component key="rest-client" class="no.nav.kiv.confluence.labs.impl.RestCallClientImpl" public="true" >
-        <interface>no.nav.kiv.confluence.labs.api.RestCallClient</interface>
-    </component>
-
     <!-- add our i18n resource -->
     <resource type="i18n" name="i18n" location="confluence-commons"/>
 
