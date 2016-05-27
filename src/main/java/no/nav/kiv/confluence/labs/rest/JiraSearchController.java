@@ -217,6 +217,49 @@ public class JiraSearchController {
     }
 
     @GET
+    public Response getJqlSearch(@QueryParam("jql") String jql, @QueryParam("maxResults") String maxResults, @QueryParam("fields") String fields) {
+        String message = "";
+
+        String requestPath = "/rest/api/2/search?jql=" + HtmlUtil.urlEncode(jql);
+
+        requestPath = requestPath.concat("&maxResults=" + (maxResults != null ? maxResults : "1000"));
+
+        if (null != fields && !fields.isEmpty()) {
+            requestPath = requestPath.concat("&fields=" + HtmlUtil.urlEncode(fields));
+        }
+
+        try {
+            ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.GET, requestPath);
+            String response = request.execute();
+
+            return Response.ok(response).build();
+
+        } catch (CredentialsRequiredException e) {
+            message = "[CREx] Failed to find metadata with the request to " + requestPath + " got " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+
+        } catch (ResponseException e) {
+            message = "[REx] Failed to find metadata with the request to " + requestPath + " got " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message);
+            }
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+
+        } catch (Exception e) {
+            message = "Failed to find metadata, caught " + e.getClass().getName() + " with message: " + e.getMessage();
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+        }
+        // Common return point for all caught exceptions, success is returned inside the try
+        return Response.serverError().entity(message).build();
+
+    }
+
+    @GET
     @Path("metadata/statuses")
     public Response getStatuser(@QueryParam("projectKey") String projectKey) {
         String message;
