@@ -3,10 +3,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>confluence-parent</artifactId>
+        <artifactId>confluence-ext-parent</artifactId>
         <groupId>no.nav.kiv.confluence.labs</groupId>
-        <version>2.3.2-SNAPSHOT</version>
+        <version>5.9.6</version>
     </parent>
+
     <artifactId>confluence-commons</artifactId>
     <version>2.3.2-SNAPSHOT</version>
     <name>NAV IKT :: Confluence Commons</name>
@@ -147,6 +148,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:ssh://git@stash.devillo.no:7999/kiv/confluence-commons.git</connection>
+        <developerConnection>scm:git:ssh://git@stash.devillo.no:7999/kiv/confluence-commons.git</developerConnection>
+        <url>http://stash.devillo.no/projects/KIV/repos/confluence-commons</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
         <atlassian.spring.scanner.version>1.2.9</atlassian.spring.scanner.version>
