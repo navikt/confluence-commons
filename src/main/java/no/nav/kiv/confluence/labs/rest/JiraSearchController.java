@@ -9,7 +9,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchRequest;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
-import no.nav.kiv.confluence.labs.utils.DefaultRequestBuilder;
+import no.nav.kiv.confluence.labs.utils.RequestBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +35,10 @@ public class JiraSearchController {
 
     private static final Logger log = LoggerFactory.getLogger(JiraSearchController.class);
 
-    private DefaultRequestBuilder requestBuilder;
+    private RequestBuilder requestBuilder;
 
     @Inject
-    public JiraSearchController(DefaultRequestBuilder requestBuilder) {
+    public JiraSearchController(RequestBuilder requestBuilder) {
         this.requestBuilder = requestBuilder;
     }
 

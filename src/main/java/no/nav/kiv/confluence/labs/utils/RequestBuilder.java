@@ -11,4 +11,6 @@ import com.atlassian.sal.api.net.Request;
 public interface RequestBuilder {
 
     ApplicationLinkRequest createRequest(Request.MethodType method, String url) throws CredentialsRequiredException;
+
+    String getApplicationLinkHost();
 }

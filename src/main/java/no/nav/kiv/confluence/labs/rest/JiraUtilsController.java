@@ -6,7 +6,7 @@ import com.atlassian.confluence.util.HtmlUtil;
 import com.atlassian.sal.api.net.Request;
 import com.atlassian.sal.api.net.ResponseException;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
-import no.nav.kiv.confluence.labs.utils.DefaultRequestBuilder;
+import no.nav.kiv.confluence.labs.utils.RequestBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +29,10 @@ import javax.ws.rs.core.Response;
 public class JiraUtilsController {
     private static final Logger log = LoggerFactory.getLogger(JiraUtilsController.class);
 
-    private DefaultRequestBuilder requestBuilder;
+    private RequestBuilder requestBuilder;
 
     @Inject
-    public JiraUtilsController(DefaultRequestBuilder requestBuilder) {
+    public JiraUtilsController(RequestBuilder requestBuilder) {
         this.requestBuilder = requestBuilder;
     }
 

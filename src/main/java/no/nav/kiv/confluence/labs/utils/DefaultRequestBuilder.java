@@ -53,6 +53,14 @@ public class DefaultRequestBuilder implements RequestBuilder {
         return factory.createRequest(method, url);
     }
 
+    @Override
+    public String getApplicationLinkHost() {
+        if (null == confluenceAppLink) {
+            lazyFindConfluenceApplicationLink();
+        }
+        return confluenceAppLink.getRpcUrl().toString();
+    }
+
     private ApplicationLinkRequestFactory lazyFindConfluenceRequestFactory() {
         if (null == confluenceAppLink) {
             lazyFindConfluenceApplicationLink();
