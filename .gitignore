@@ -7,3 +7,6 @@ target
 *.swo
 *~
 *.log
+.classpath
+.project
+.settings
