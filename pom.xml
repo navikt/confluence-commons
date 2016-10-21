@@ -5,13 +5,13 @@
     <parent>
         <artifactId>confluence-ext-parent</artifactId>
         <groupId>no.nav.kiv.confluence.labs</groupId>
-        <version>5.9.6</version>
+        <version>5.10.7.0</version>
     </parent>
 
     <artifactId>confluence-commons</artifactId>
     <version>2.3.4-SNAPSHOT</version>
     <name>NAV IKT :: Confluence Commons</name>
-    <description>Contains som common components used in Confluence f.eks: communication to external systems like JIRA.</description>
+    <description>Contains some common components used in Confluence f.ex: communication to external systems like JIRA.</description>
     <packaging>atlassian-plugin</packaging>
 
     <dependencies>
@@ -28,10 +28,6 @@
             <artifactId>atlassian-spring-scanner-annotation</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.plugin</groupId>
-            <artifactId>atlassian-spring-scanner-runtime</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
         </dependency>
@@ -41,7 +37,6 @@
             <version>5.7.4</version>
             <scope>provided</scope>
         </dependency>
-        <!-- WIRED TEST RUNNER DEPENDENCIES -->
         <dependency>
             <groupId>com.atlassian.plugins</groupId>
             <artifactId>atlassian-plugins-osgi-testrunner</artifactId>
@@ -102,21 +97,16 @@
 
                     <productVersion>${confluence.version}</productVersion>
                     <productDataVersion>${confluence.data.version}</productDataVersion>
-                    <enableQuickReload>true</enableQuickReload>
-                    <enableFastdev>false</enableFastdev>
                     <instructions>
                         <CONF_COMM />
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <Spring-Context>*</Spring-Context>
                         <Export-Package>
-                            no.nav.kiv.confluence.labs.utils.*;version="${project.version}",
+                            no.nav.kiv.confluence.labs.api.*;version="${project.version}",
                         </Export-Package>
                         <Import-Package>
-                            org.springframework.osgi.*;resolution:="optional",
-                            org.eclipse.gemini.blueprint.*;resolution:="optional",
-                            com.atlassian.plugin.osgi.bridge.external,
                             com.atlassian.applinks.api,
-                            *;resolution:=optional
+                            *,
                         </Import-Package>
                     </instructions>
                 </configuration>
@@ -124,32 +114,6 @@
             <plugin>
                 <groupId>com.atlassian.plugin</groupId>
                 <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
-                <version>1.2.9</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>atlassian-spring-scanner</goal>
-                        </goals>
-                        <phase>process-classes</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!--
-                    <scannedDependencies>
-                        <dependency>
-                            <groupId>com.atlassian.plugin</groupId>
-                            <artifactId>atlassian-spring-scanner-external-jar</artifactId>
-                        </dependency>
-                    </scannedDependencies>
-                    <verbose>false</verbose>-->
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -162,9 +126,6 @@
     </scm>
 
     <properties>
-        <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
-        <atlassian.spring.scanner.version>1.2.9</atlassian.spring.scanner.version>
-        <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
     </properties>
 </project>

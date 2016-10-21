@@ -8,7 +8,7 @@ import com.atlassian.sal.api.net.ResponseException;
 import com.google.common.collect.Lists;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
 import no.nav.kiv.confluence.labs.rest.model.ShareJiraIssueRequest;
-import no.nav.kiv.confluence.labs.utils.RequestBuilder;
+import no.nav.kiv.confluence.labs.api.RequestBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

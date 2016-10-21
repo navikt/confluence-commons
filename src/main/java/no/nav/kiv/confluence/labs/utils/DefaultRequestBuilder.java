@@ -5,6 +5,7 @@ import com.atlassian.applinks.api.application.jira.JiraApplicationType;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.net.Request.MethodType;
+import no.nav.kiv.confluence.labs.api.RequestBuilder;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -67,7 +68,7 @@ public class DefaultRequestBuilder implements RequestBuilder {
         }
 
         if (null == confluenceRequestFactory) {
-            confluenceRequestFactory = confluenceAppLink.createImpersonatingAuthenticatedRequestFactory();
+            confluenceRequestFactory = confluenceAppLink.createAuthenticatedRequestFactory();
         }
 
         return confluenceRequestFactory;

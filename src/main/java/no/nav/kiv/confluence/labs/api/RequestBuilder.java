@@ -1,4 +1,4 @@
-package no.nav.kiv.confluence.labs.utils;
+package no.nav.kiv.confluence.labs.api;
 
 import com.atlassian.applinks.api.ApplicationLinkRequest;
 import com.atlassian.applinks.api.CredentialsRequiredException;

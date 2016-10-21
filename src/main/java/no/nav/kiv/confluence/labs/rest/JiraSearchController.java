@@ -9,7 +9,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchRequest;
 import no.nav.kiv.confluence.labs.rest.model.JiraSearchResponse;
-import no.nav.kiv.confluence.labs.utils.RequestBuilder;
+import no.nav.kiv.confluence.labs.api.RequestBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
