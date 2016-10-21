@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>confluence-commons</artifactId>
-    <version>2.3.4</version>
+    <version>2.3.5-SNAPSHOT</version>
     <name>NAV IKT :: Confluence Commons</name>
     <description>Contains some common components used in Confluence f.ex: communication to external systems like JIRA.</description>
     <packaging>atlassian-plugin</packaging>
@@ -122,7 +122,7 @@
         <connection>scm:git:ssh://git@stash.devillo.no:7999/kiv/confluence-commons.git</connection>
         <developerConnection>scm:git:ssh://git@stash.devillo.no:7999/kiv/confluence-commons.git</developerConnection>
         <url>http://stash.devillo.no/projects/KIV/repos/confluence-commons</url>
-        <tag>confluence-commons-2.3.4</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
