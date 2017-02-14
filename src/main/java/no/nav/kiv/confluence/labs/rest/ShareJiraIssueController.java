@@ -54,7 +54,7 @@ public class ShareJiraIssueController {
 
             JSONObject remoteLink = new JSONObject();
             remoteLink.put("emails", Lists.newArrayList());
-            remoteLink.put("message", "");
+            remoteLink.put("message", requestModel.getMessage());
             remoteLink.put("usernames", users);
 
             ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.POST, requestPath);
@@ -62,9 +62,12 @@ public class ShareJiraIssueController {
             request.setHeader("Content-Type", "application/json");
             request.setRequestBody(remoteLink.toString());
 
+            //log to test
+//            log.debug("\n requestPath:"+requestPath + "\n");
+//            log.debug("\n remotelink:" + remoteLink.toString()+ "\n");
+            
             String response = request.execute();
-
-
+            
             return Response.ok().build();
 
         } catch (CredentialsRequiredException e) {
