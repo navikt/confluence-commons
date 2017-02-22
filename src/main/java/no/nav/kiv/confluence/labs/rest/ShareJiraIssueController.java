@@ -62,10 +62,6 @@ public class ShareJiraIssueController {
             request.setHeader("Content-Type", "application/json");
             request.setRequestBody(remoteLink.toString());
 
-            //log to test
-//            log.debug("\n requestPath:"+requestPath + "\n");
-//            log.debug("\n remotelink:" + remoteLink.toString()+ "\n");
-            
             String response = request.execute();
             
             return Response.ok().build();
