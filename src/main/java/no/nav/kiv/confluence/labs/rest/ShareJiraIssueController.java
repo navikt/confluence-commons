@@ -54,7 +54,7 @@ public class ShareJiraIssueController {
 
             JSONObject remoteLink = new JSONObject();
             remoteLink.put("emails", Lists.newArrayList());
-            remoteLink.put("message", requestModel.getMessage());
+            remoteLink.put("message", requestModel.getMessage()==null?"":requestModel.getMessage());
             remoteLink.put("usernames", users);
 
             ApplicationLinkRequest request = requestBuilder.createRequest(Request.MethodType.POST, requestPath);
