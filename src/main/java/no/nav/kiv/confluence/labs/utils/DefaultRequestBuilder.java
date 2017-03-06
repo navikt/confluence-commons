@@ -67,9 +67,7 @@ public class DefaultRequestBuilder implements RequestBuilder {
             lazyFindConfluenceApplicationLink();
         }
 
-        if (null == confluenceRequestFactory) {
-            confluenceRequestFactory = confluenceAppLink.createAuthenticatedRequestFactory();
-        }
+        confluenceRequestFactory = confluenceAppLink.createAuthenticatedRequestFactory();
 
         return confluenceRequestFactory;
     }
